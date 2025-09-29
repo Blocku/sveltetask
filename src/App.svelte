@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import Task from './components/Task.svelte'
 
-    let isMenuOpened:boolean = $state(true)
+    let isMenuOpened:boolean = $state(false)
 
     let tasks = $state<any>([]) 
     let newTask = $state<any>([{name: "", description: ""}])
@@ -47,7 +47,7 @@
 <main class="w-full p-3 space-y-20" >
     
     <!-- Button to open menu -->
-    <button onclick={() => isMenuOpened = !isMenuOpened} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Add a new text</button>    
+    <button onclick={() => isMenuOpened = !isMenuOpened} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Create a new text</button>    
     
     {#if isMenuOpened}
         <section class="w-full h-full absolute top-0 left-0" >
@@ -65,7 +65,7 @@
                         <p class="text-[17px] select-none" >Description</p>
                         <input bind:value={newTask.description} type="text" placeholder="text" class="w-full p-1 rounded outline-zinc-300 outline-2 focus:outline-indigo-500 focus:outline-2 " >
                     </div>
-                    <button onclick={createTask} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Create a new task</button>
+                    <button onclick={createTask} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Add a new task</button>
                 </div>  
             </div>
         </section>
