@@ -3,6 +3,7 @@
     import Task from './components/Task.svelte'
 
     let isMenuOpened:boolean = $state(false)
+    let isTaskEdited:boolean = $state(false)
 
     let tasks = $state<any>([]) 
     let newTask = $state<any>([{name: "", description: ""}])
@@ -42,6 +43,19 @@
         localStorage.setItem('tasks', JSON.stringify(newTasks))
     }
 
+    function editTask(task: any){
+        newTask = task
+        isMenuOpened = true
+        isTaskEdited = true
+    }
+
+    function saveTask(){
+        localStorage.setItem('tasks', JSON.stringify([...tasks]))
+        newTask = [{name: "", description: ""}]
+        isMenuOpened = false
+        isTaskEdited = false
+    }
+
 </script>
 
 <main class="w-full p-3 space-y-20" >
@@ -65,7 +79,15 @@
                         <p class="text-[17px] select-none" >Description</p>
                         <input bind:value={newTask.description} type="text" placeholder="text" class="w-full p-1 rounded outline-zinc-300 outline-2 focus:outline-indigo-500 focus:outline-2 " >
                     </div>
-                    <button onclick={createTask} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Add a new task</button>
+
+                    <!-- Button dependency on its state -->
+                    {#if isTaskEdited}
+                        <button onclick={saveTask} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Save</button>
+                    {:else}
+                        <button onclick={createTask} class="w-full rounded-md p-1.5 text-lg text-white font-semibold bg-indigo-500 cursor-pointer" >Add a new task</button>
+                    
+                    {/if}
+
                 </div>  
             </div>
         </section>
@@ -75,7 +97,7 @@
     <section>
         <ul class="w-full space-y-3" >
             {#each tasks as task}
-                <Task {task} {deleteTask} />
+                <Task {task} {deleteTask} {editTask} />
             {:else}
                 <div class="text-center text-lg" >You have no tasks...</div>
             {/each}
